@@ -3,7 +3,7 @@ package org.example.demo.sort;
 /**
  * @author wangjunjie
  */
-public class MergeSort extends BaseSort{
+public class MergeSort extends ArraySort {
 
     @Override
     protected String getName() {
@@ -11,7 +11,7 @@ public class MergeSort extends BaseSort{
     }
 
     @Override
-    protected void sort(int[] arr) {
+    public void sort(int[] arr) {
         mergeSort(arr, 0, arr.length - 1);
     }
 

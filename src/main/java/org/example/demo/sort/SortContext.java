@@ -1,24 +1,33 @@
 package org.example.demo.sort;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class SortContext {
 
-    private int arrLen;
+    private List<ConfigurableRunnableSort> configurableRunnableSortList;
 
-    private boolean isPrintArr;
+    private final SortConfig sortConfig;
 
-    public boolean isPrintArr() {
-        return isPrintArr;
+    public SortContext(SortConfig sortConfig, ConfigurableRunnableSort... configurableRunnableSortList) {
+        this.configurableRunnableSortList = new ArrayList<>();
+        if(configurableRunnableSortList.length != 0) {
+            this.configurableRunnableSortList.addAll(Arrays.asList(configurableRunnableSortList));
+        }
+
+        this.sortConfig = sortConfig;
     }
 
-    public void setPrintArr(boolean printArr) {
-        isPrintArr = printArr;
+    public void addSort(ConfigurableRunnableSort sort) {
+        configurableRunnableSortList.add(sort);
     }
 
-    public int getArrLen() {
-        return arrLen;
-    }
+    public void run() {
 
-    public void setArrLen(int arrLen) {
-        this.arrLen = arrLen;
+        for (ConfigurableRunnableSort configurableRunnableSort : configurableRunnableSortList) {
+            configurableRunnableSort.setSortConfig(sortConfig);
+            configurableRunnableSort.run();
+        }
     }
 }

@@ -3,7 +3,7 @@ package org.example.demo.sort;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class QuickSort extends BaseSort {
+public class QuickSort extends ArraySort {
 
     @Override
     protected String getName() {
@@ -11,7 +11,7 @@ public class QuickSort extends BaseSort {
     }
 
     @Override
-    protected void sort(int[] arr) {
+    public void sort(int[] arr) {
         quickSort(arr, 0, arr.length - 1);
     }
 

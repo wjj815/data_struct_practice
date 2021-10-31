@@ -3,19 +3,17 @@ package org.example.demo.sort;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class BaseSort {
-
-    private static SortContext sortContext;
-
+public abstract class ArraySort implements Sortable<int[]>, ConfigurableRunnableSort {
+    private SortConfig sortConfig;
     /**
      * 排序花费的时间
      */
     private long tookTime;
 
-    public static void setSortContext(SortContext sortContext) {
-        BaseSort.sortContext = sortContext;
+    @Override
+    public void setSortConfig(SortConfig sortConfig) {
+        this.sortConfig = sortConfig;
     }
-
 
     public long getTookSortedTime() {
         return tookTime;
@@ -27,8 +25,8 @@ public abstract class BaseSort {
      */
     public int[] getArrayData() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        int arrLength = sortContext.getArrLen();
-        System.out.println("当前设置的测试数据数据长度为: " + sortContext.getArrLen());
+        int arrLength = sortConfig.getArrLen();
+        System.out.println("当前设置的测试数据数据长度为: " + sortConfig.getArrLen());
         int[] arr = new int[arrLength];
         for (int i = 0; i < arrLength; i++) {
             arr[i] = random.nextInt(arrLength);
@@ -42,19 +40,20 @@ public abstract class BaseSort {
      */
     protected abstract String getName();
 
+    @Override
     public void run() {
         System.out.printf("\n\n开始 [ %s ] 排序:\n", getName());
         int[] arrayData = getArrayData();
         int[] trueSortedArr = Arrays.copyOf(arrayData, arrayData.length);
         Arrays.sort(trueSortedArr);
-        if(sortContext.isPrintArr()) {
+        if(sortConfig.isPrintArr()) {
             System.out.println("未排序前的数组数据:\n" + Arrays.toString(arrayData));
             System.out.println("-----------");
         }
         long start = System.currentTimeMillis();
         sort(arrayData);
 
-        if(sortContext.isPrintArr()) {
+        if(sortConfig.isPrintArr()) {
             System.out.println("排序后的数组数据:\n" + Arrays.toString(arrayData));
             System.out.println("-----------");
         }
@@ -64,7 +63,7 @@ public abstract class BaseSort {
         System.out.println("校验排序是否正确: ");
         boolean validate = validate(trueSortedArr, arrayData);
         if(!validate) {
-            throw new SortException("排序结果有误！");
+            throw new SortException(String.format("[ %s ] 排序结果有误!", getName()));
         }
         System.out.println("排序结果正确！！！");
     }
@@ -81,6 +80,7 @@ public abstract class BaseSort {
      * 具体排序方法
      * @param arr
      */
-    protected abstract void sort(int[] arr);
+    @Override
+    public abstract void sort(int[] arr);
 
 }

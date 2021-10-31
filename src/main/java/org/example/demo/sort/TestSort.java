@@ -4,16 +4,15 @@ public class TestSort {
 
     public static void main(String[] args) {
 
-        SortContext sortContext = new SortContext();
-        sortContext.setArrLen(1000000);
-        sortContext.setPrintArr(false);
-        BaseSort.setSortContext(sortContext);
-        QuickSort quickSort = new QuickSort();
-        quickSort.run();
+        SortConfig sortConfig = new SortConfig();
+        sortConfig.setArrLen(1000000);
+        sortConfig.setPrintArr(false);
 
-        MergeSort mergeSort = new MergeSort();
-        mergeSort.run();
+        SortContext sortContext = new SortContext(sortConfig);
+        sortContext.addSort(new QuickSort());
+        sortContext.addSort(new MergeSort());
+        sortContext.addSort(new HeapSort());
 
-
+        sortContext.run();
     }
 }
