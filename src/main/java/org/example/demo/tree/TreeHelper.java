@@ -1,6 +1,7 @@
 package org.example.demo.tree;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class TreeHelper {
 
@@ -12,45 +13,65 @@ public class TreeHelper {
      * 从序列中生成树
      * 数据分隔符为","
      * 例: 1,2,3,4,#
-     * @param treeStr
+     *
+     * @param treeArrStr
      * @return
      */
-    public static TreeNode buildTree(String treeStr) {
+    public static TreeNode buildTree(String treeArrStr) {
+        String[] treeArr = treeArrStr.split(",");
+        int len = treeArr.length;
+        if (treeArr.length == 0) {
+            return null;
+        }
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        TreeNode root = getTreeNode(treeArr[0]);
 
-        if(treeStr == null || "".equals(treeStr)) {
+        if (root == null) {
             return null;
         }
 
-        String[] split = treeStr.split(",");
+        dq.offer(root);
+        int i = 1;
+        outer: while (!dq.isEmpty()) {
+            int size = dq.size();
+            for (int i1 = 0; i1 < size; i1++) {
+                TreeNode node = dq.poll();
 
-        if(split.length == 0) {
-            return null;
-        }
+                if (node.left != null) {
+                    dq.offer(node.left);
+                } else {
+                    node.left = getTreeNode(treeArr[i]);
+                    if (node.left != null) {
+                        dq.offer(node.left);
+                    }
+                    i++;
+                    if(i == len) {
+                        break outer;
+                    }
+                }
 
-        if("#".equals(split[0])) {
-            return null;
-        }
-
-        TreeNode node = new TreeNode(split[0]);
-
-        TreeNode[] treeNodes = new TreeNode[split.length];
-        treeNodes[0] = node;
-
-        for(int i = 1; i < split.length; i++) {
-            int parentIndex = (i - 1) >> 1;
-            node = treeNodes[parentIndex];
-
-            if(i == (parentIndex << 1) + 1) {
-                node.left = !"#".equals(split[i]) ? new TreeNode(split[i]) : null;
-                treeNodes[i] = node.left;
+                if (node.right != null) {
+                    dq.offer(node.right);
+                } else {
+                    node.right = getTreeNode(treeArr[i]);
+                    if (node.right != null) {
+                        dq.offer(node.right);
+                    }
+                    i++;
+                    if(i == len) {
+                        break outer;
+                    }
+                }
             }
-
-            if(i == (parentIndex << 1) + 2) {
-                node.right = !"#".equals(split[i]) ? new TreeNode(split[i]) : null;
-                treeNodes[i] = node.right;
-            }
-
         }
-        return treeNodes[0];
+        return root;
     }
+
+    public static TreeNode getTreeNode(String s) {
+        if ("null".equals(s)) {
+            return null;
+        }
+        return new TreeNode(s);
+    }
+
 }

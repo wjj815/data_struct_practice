@@ -102,6 +102,7 @@ public class TraverseTree {
     }
 
     public void inOrderByMorris(TreeNode node) {
+        System.out.println("Morris 中序遍历 ：");
         if (node == null) {
             return;
         }
@@ -127,4 +128,93 @@ public class TraverseTree {
         }
     }
 
+    public void postOrder(TreeNode node) {
+        if(node == null) {
+            return;
+        }
+
+        postOrder(node.left);
+        postOrder(node.right);
+        System.out.print(node.data + " ");
+    }
+
+    public void postOrderUnRecur(TreeNode node) {
+        System.out.println("非递归后序遍历 ： ");
+        if(node == null) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        Stack<TreeNode> res = new Stack<>();
+        stack.push(node);
+        while(!stack.isEmpty()) {
+            node = stack.pop();
+            res.push(node);
+            if(node.left != null) {
+                stack.push(node.left);
+            }
+
+            if(node.right != null) {
+                stack.push(node.right);
+            }
+        }
+
+        while(!res.isEmpty()) {
+            System.out.print(res.pop().data + " ");
+        }
+    }
+
+    public void postOrderByMorris(TreeNode node) {
+        System.out.println("Morris 后序遍历 ：");
+        TreeNode head = node;
+
+        while(node != null) {
+            TreeNode morrisRight = node.left;
+            if(morrisRight != null) {
+                while(morrisRight.right != null && morrisRight.right != node) {
+                    morrisRight = morrisRight.right;
+                }
+
+                if(morrisRight.right == null) {
+                    morrisRight.right = node;
+                    node = node.left;
+                    continue;
+                }else {
+                    morrisRight.right = null;
+                    printEdge(node.left);
+                }
+            }
+
+            node = node.right;
+        }
+
+        printEdge(head);
+    }
+
+    private void printEdge(TreeNode node) {
+        TreeNode temp = node;
+
+        TreeNode treeNode = reverseList(temp);
+
+        temp = treeNode;
+
+        while(treeNode != null) {
+            System.out.print(treeNode.data + " ");
+            treeNode = treeNode.right;
+        }
+
+        reverseList(temp);
+    }
+
+    public TreeNode reverseList(TreeNode node) {
+
+        if(node == null || node.right == null) {
+            return node;
+        }
+
+        TreeNode newHead = reverseList(node.right);
+        node.right.right =  node;
+        node.right = null;
+
+        return newHead;
+    }
 }
