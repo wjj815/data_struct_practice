@@ -44,6 +44,23 @@ public class TraverseTree {
         }
     }
 
+    public void preOrderUnRecur2(TreeNode node) {
+
+        Stack<TreeNode> stack = new Stack<>();
+
+        while(!stack.isEmpty() || node != null) {
+            while(node != null) {
+                System.out.print(node.data + " ");
+                stack.push(node);
+                node = node.left;
+            }
+
+            if(!stack.isEmpty()) {
+                node = stack.pop().right;
+            }
+        }
+    }
+
     public void preOrderByMorris(TreeNode node) {
 
         System.out.println("Morris 先序遍历 ：");

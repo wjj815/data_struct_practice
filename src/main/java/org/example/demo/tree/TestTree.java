@@ -10,6 +10,8 @@ public class TestTree {
 
         new TraverseTree().preOrderByMorris(node);
         System.out.println();
+        new TraverseTree().preOrderUnRecur2(node);
+        System.out.println();
         new TraverseTree().inOrder(node);
         System.out.println();
         new TraverseTree().inOrderByMorris(node);
