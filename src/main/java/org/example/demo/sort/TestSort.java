@@ -12,6 +12,7 @@ public class TestSort {
         sortContext.addSort(new QuickSort());
         sortContext.addSort(new MergeSort());
         sortContext.addSort(new HeapSort());
+        sortContext.addSort(new BubbleSort());
 
         sortContext.run();
     }
