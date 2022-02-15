@@ -17,7 +17,7 @@ public class LruCache {
 
     private final Node head;
 
-    private Node tail;
+    private final Node tail;
 
 
     private final int maxSize;
