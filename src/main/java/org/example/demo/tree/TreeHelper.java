@@ -71,7 +71,7 @@ public class TreeHelper {
         if ("null".equals(s)) {
             return null;
         }
-        return new TreeNode(s);
+        return new TreeNode(Integer.parseInt(s));
     }
 
 }

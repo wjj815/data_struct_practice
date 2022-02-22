@@ -15,7 +15,7 @@ public class TraverseTree {
         if (node == null) {
             return;
         }
-        System.out.print(node.data + " ");
+        System.out.print(node.val + " ");
         preOrder(node.left);
         preOrder(node.right);
     }
@@ -31,7 +31,7 @@ public class TraverseTree {
 
         while (!stack.isEmpty()) {
             node = stack.pop();
-            System.out.print(node.data + " ");
+            System.out.print(node.val + " ");
 
             if (node.right != null) {
                 stack.push(node.right);
@@ -50,7 +50,7 @@ public class TraverseTree {
 
         while(!stack.isEmpty() || node != null) {
             while(node != null) {
-                System.out.print(node.data + " ");
+                System.out.print(node.val + " ");
                 stack.push(node);
                 node = node.left;
             }
@@ -73,7 +73,7 @@ public class TraverseTree {
                 }
 
                 if (mostRight.right == null) {
-                    System.out.print(node.data + " ");
+                    System.out.print(node.val + " ");
                     mostRight.right = node;
                     node = node.left;
                     continue;
@@ -81,7 +81,7 @@ public class TraverseTree {
                     mostRight.right = null;
                 }
             } else {
-                System.out.print(node.data + " ");
+                System.out.print(node.val + " ");
             }
             node = node.right;
         }
@@ -94,7 +94,7 @@ public class TraverseTree {
         }
 
         inOrder(node.left);
-        System.out.print(node.data + " ");
+        System.out.print(node.val + " ");
         inOrder(node.right);
     }
 
@@ -112,7 +112,7 @@ public class TraverseTree {
                 node = node.left;
             } else {
                 node = stack.pop();
-                System.out.println(node.data + " ");
+                System.out.println(node.val + " ");
                 node = node.right;
             }
         }
@@ -140,7 +140,7 @@ public class TraverseTree {
                     mostRight.right = null;
                 }
             }
-            System.out.print(node.data + " ");
+            System.out.print(node.val + " ");
             node = node.right;
         }
     }
@@ -152,7 +152,7 @@ public class TraverseTree {
 
         postOrder(node.left);
         postOrder(node.right);
-        System.out.print(node.data + " ");
+        System.out.print(node.val + " ");
     }
 
     public void postOrderUnRecur(TreeNode node) {
@@ -176,7 +176,7 @@ public class TraverseTree {
         }
 
         while(!res.isEmpty()) {
-            System.out.print(res.pop().data + " ");
+            System.out.print(res.pop().val + " ");
         }
     }
 
@@ -215,7 +215,7 @@ public class TraverseTree {
         temp = treeNode;
 
         while(treeNode != null) {
-            System.out.print(treeNode.data + " ");
+            System.out.print(treeNode.val + " ");
             treeNode = treeNode.right;
         }
 

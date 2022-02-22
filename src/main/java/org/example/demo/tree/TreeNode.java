@@ -6,11 +6,11 @@ package org.example.demo.tree;
  */
 public class TreeNode {
 
-    Object data;
+    int val;
     TreeNode left;
     TreeNode right;
 
-    public TreeNode(Object data) {
-        this.data = data;
+    public TreeNode(int val) {
+        this.val = val;
     }
 }
