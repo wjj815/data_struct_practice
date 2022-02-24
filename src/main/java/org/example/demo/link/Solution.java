@@ -24,21 +24,6 @@ public class Solution {
     }
 
 
-    public static void main(String[] args) {
-        ListNode node = new ListNode(-1);
-        ListNode n1 = new ListNode(2);
-        ListNode n2 = new ListNode(3);
-        ListNode n3 = new ListNode(4);
-        node.next  = n1;
-        n1.next = n2;
-        n2.next = n3;
-        Helper.printList(node);
-
-        ListNode listNode = new Solution().reverseList(node);
-        Helper.printList(listNode);
-
-    }
-
     /**
      *  翻转链表
      * @param head 头结点

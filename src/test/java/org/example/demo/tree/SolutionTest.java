@@ -1,12 +1,14 @@
 package org.example.demo.tree;
 
+import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 
-class SolutionTest {
+public class SolutionTest {
 
-    @org.junit.jupiter.api.Test
-    void buildTree() {
+    @Test
+    public void buildTree() {
         int[] preOrder = {6, 2, 0, 4, 3, 5, 8, 7, 9};
         int[] inOrder = {0, 2, 3, 4, 5, 6, 7, 8, 9};
         Map<Integer, Integer> inMap = new HashMap<>();

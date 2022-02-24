@@ -1,10 +1,8 @@
 package org.example.demo.string;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class SolutionTest {
+public class SolutionTest {
 
     /**
      * 输入：s = "10101"
@@ -16,7 +14,7 @@ class SolutionTest {
      * "10|1|01"
      */
     @Test
-    void numWays() {
+    public void numWays() {
         Solution solution = new Solution();
         int i = solution.numWays("10101");
         System.out.println(i);
