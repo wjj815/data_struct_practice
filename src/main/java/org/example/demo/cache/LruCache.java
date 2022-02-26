@@ -70,6 +70,7 @@ public class LruCache {
                 removeFromHead();
             }
             Node node;
+            // 复用空间
             if(deletedNode != null) {
                 node = deletedNode;
                 node.key = key;
@@ -93,6 +94,7 @@ public class LruCache {
     public int get(int key) {
         if(cache.containsKey(key)) {
             Node node = cache.get(key);
+            // 更新顺序
             moveToTail(node);
             return node.value;
         }
@@ -104,11 +106,13 @@ public class LruCache {
      * @param node
      */
     public void addToTail(Node node) {
+        // 获取最后一个节点
         Node tailPrev = tail.prev;
-
+        // 将新节点连接到最后一个节点的后面
         tailPrev.next = node;
         node.prev = tailPrev;
 
+        // 将新节点标识为最后一个节点
         node.next = tail;
         tail.prev = node;
     }
@@ -118,11 +122,14 @@ public class LruCache {
      * @param node
      */
     public void deleteNode(Node node) {
+        // 获取当前节点的前一个节点和后一个节点
         Node prev = node.prev;
         Node next = node.next;
+
+        // 将当前节点的前一个节点与后一个节点连接
         prev.next = next;
         next.prev = prev;
-
+        // 清除当前节点的前后指向
         node.prev = null;
         node.next = null;
     }
@@ -132,9 +139,12 @@ public class LruCache {
      * @param node
      */
     public void moveToTail(Node node) {
+        // 先将节点从链表中删除
         deleteNode(node);
+        // 然后将节点放置到链表的最后
         addToTail(node);
     }
+
 
     public void removeFromHead() {
         Node node = head.next;
