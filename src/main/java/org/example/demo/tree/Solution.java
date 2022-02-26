@@ -1,5 +1,7 @@
 package org.example.demo.tree;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Map;
 
 public class Solution {
@@ -37,5 +39,49 @@ public class Solution {
                 inRoot + 1, inEnd, inMap);
 
         return root;
+    }
+
+
+    /**
+     * 递归方式
+     * @param root 根节点
+     * @return 这棵二叉树的最大深度
+     */
+    public int maxDepthByRecur(TreeNode root) {
+        if(root == null) return 0;
+        // 递归计算左右子树的最大深度
+        int leftMax = maxDepthByRecur(root.left);
+        int rightMax = maxDepthByRecur(root.right);
+        // 整颗数的最大深度
+        return Math.max(leftMax, rightMax) + 1;
+    }
+
+
+    /**
+     *  层序遍历的方式
+     * @param root 根节点
+     * @return 最大高度
+     */
+    public int maxDepthByLevelTraverse(TreeNode root) {
+        if(root == null) return 0;
+        int depth = 0;
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.offer(root);
+        // 从上到下遍历二叉树的每一层
+        while(!dq.isEmpty()) {
+            int size = dq.size();
+            // 从左到右遍历每一层的每个节点
+            for (int i = 0; i < size; i++) {
+                TreeNode node = dq.poll();
+                if(node.left != null) {
+                    dq.offer(node.left);
+                }
+                if(node.right != null) {
+                    dq.offer(node.right);
+                }
+            }
+            depth++;
+        }
+        return depth;
     }
 }

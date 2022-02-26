@@ -1,5 +1,6 @@
 package org.example.demo.tree;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -34,5 +35,29 @@ public class SolutionTest {
          *     3 5
          */
         TreeHelper.printTree(treeNode);
+    }
+
+    @Test
+    public void testMaxDepth() {
+        /**
+         *        6
+         *       / \
+         *      /   \
+         *     /     \
+         *    /       \
+         *    2       8
+         *   / \     / \
+         *  /   \   /   \
+         *  0   4   7   9
+         *     / \
+         *     3 5
+         */
+        TreeNode node = TreeHelper.buildTree("6,2,8,0,4,7,9,null,null,3,5");
+        TreeHelper.printTree(node);
+
+        Solution solution = new Solution();
+
+        // 高度为 4
+        Assert.assertEquals(solution.maxDepthByLevelTraverse(node), solution.maxDepthByRecur(node));
     }
 }
