@@ -84,4 +84,34 @@ public class Solution {
         }
         return depth;
     }
+
+    public int minDepthByLevelTraverse(TreeNode root) {
+        if(root == null) return 0;
+        int depth = 0;
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.offer(root);
+        // 从上到下遍历二叉树的每一层
+        while(!dq.isEmpty()) {
+            int size = dq.size();
+            depth++;
+            // 从左到右遍历每一层的每个节点
+            for (int i = 0; i < size; i++) {
+                TreeNode node = dq.poll();
+                //
+                if(node.left == null && node.right == null) {
+                    return depth;
+                }
+                if(node.left != null) {
+                    dq.offer(node.left);
+                }
+                if(node.right != null) {
+                    dq.offer(node.right);
+                }
+            }
+
+        }
+        return depth;
+    }
+
+
 }

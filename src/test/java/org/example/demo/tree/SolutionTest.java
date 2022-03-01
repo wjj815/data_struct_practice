@@ -60,4 +60,29 @@ public class SolutionTest {
         // 高度为 4
         Assert.assertEquals(solution.maxDepthByLevelTraverse(node), solution.maxDepthByRecur(node));
     }
+
+    @Test
+    public void testMinDepthByLevelTraverse() {
+
+        /**
+         *        6
+         *       / \
+         *      /   \
+         *     /     \
+         *    /       \
+         *    2       8
+         *   / \     / \
+         *  /   \   /   \
+         *  0   4   7   9
+         *     / \
+         *     3 5
+         */
+        TreeNode node = TreeHelper.buildTree("6,2,8,0,4,7,9,null,null,3,5");
+        TreeHelper.printTree(node);
+
+        Solution solution = new Solution();
+        int depth = solution.minDepthByLevelTraverse(node);
+        System.out.println(depth);
+
+    }
 }
