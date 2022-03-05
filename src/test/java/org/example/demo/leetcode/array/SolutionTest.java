@@ -18,4 +18,20 @@ public class SolutionTest extends TestCase {
         int[] modifiedArray = solution.getModifiedArray(length, updates);
         System.out.println(Arrays.toString(modifiedArray));
     }
+
+
+    public void testSubarraySum() {
+
+        int[] nums = {3, 5, 2, -2, 4, 1};
+        int k = 5;
+
+        Solution solution = new Solution();
+        int count = solution.subarraySum(nums, k);
+        // 4
+        // [1, 1]
+        // [1, 3]
+        // [4, 5]
+        // [2, 5]
+        System.out.println(count);
+    }
 }
