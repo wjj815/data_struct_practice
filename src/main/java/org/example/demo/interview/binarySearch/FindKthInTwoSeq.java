@@ -70,14 +70,57 @@ public class FindKthInTwoSeq {
         }
     }
 
+
+    /**
+     * 迭代法
+     * @param arr1
+     * @param arr2
+     * @param k
+     * @return
+     */
+    public int findKth2(int[] arr1, int[] arr2, int k) {
+        int al = 0, ar = arr1.length - 1;
+        int bl = 0, br = arr2.length - 1;
+
+        while (al <= ar && bl <= br) {
+            int am = al + (ar - al) / 2;
+            int bm = bl + (br - bl) / 2;
+            // 获取 a[la, ma] + b[lb, mb] 的区间长度
+            int halfLen = am - al + 1 + bm - bl + 1;
+            if (arr1[am] < arr2[bm]) {
+                if (k < halfLen) {
+                    br = bm - 1;
+                } else {
+                    k -= am - al + 1;
+                    al = am + 1;
+                }
+            } else {
+                if (k < halfLen) {
+                    ar = am - 1;
+                } else {
+                    k -= bm - bl + 1;
+                    bl = bm + 1;
+                }
+            }
+        }
+
+        // 边界判断
+        if (al > ar && bl + k - 1 < arr2.length) return arr2[bl + k - 1];
+        // b 边界判断
+        if (bl > br && al + k - 1 < arr1.length) return arr1[al + k - 1];
+
+        return -1;
+    }
+
+
     public static void main(String[] args) {
 
         int m = 10;
         int n = 4;
         int[] arr1 = {1, 2, 3, 3, 4, 4, 5, 5, 6, 6};
         int[] arr2 = {4, 7, 10, 20};
-        int k = 12;
-        int kth = new FindKthInTwoSeq().findKth(arr1, arr2, k);
+        int k = 15;
+        int kth = new FindKthInTwoSeq().findKth2(arr1, arr2, k);
         System.out.println(kth);
     }
 
