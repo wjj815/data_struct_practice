@@ -1,0 +1,58 @@
+package org.example.demo.leetcode.twopointer;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+/**
+ * 双指针相关的题目解法记录
+ */
+public class Solution {
+
+
+    /**
+     * 870 优势洗牌（类似田忌赛马）
+     *给定两个大小相等的数组 A 和 B，A 相对于 B 的优势可以用满足 A[i] > B[i] 的索引 i 的数目来描述。
+     *
+     * 返回 A 的任意排列，使其相对于 B 的优势最大化。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/advantage-shuffle
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param nums1 [2,7,11,15]
+     * @param nums2 [1,10,4,11]
+     * @return [2,11,7,15]
+     */
+    public int[] advantageCount(int[] nums1, int[] nums2) {
+
+        // 使用优先队列来存储 nums2的优势顺序, 降序排序
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>((a1,a2) -> a2[1] - a1[1]);
+
+        for (int i = 0; i < nums2.length; i++) {
+            priorityQueue.offer(new int[]{i, nums2[i]});
+        }
+
+        // 给 num1 升序排序
+        Arrays.sort(nums1);
+        int[] res = new int[nums1.length];
+        // nums1[left] 是最小值，nums1[right] 是最大值
+        int l = 0, r = nums1.length - 1;
+        while(!priorityQueue.isEmpty()) {
+            int[] pair = priorityQueue.poll();
+            // v 是 nums2 中的最大值，i 是对应索引
+            int i = pair[0], v = pair[1];
+            if(nums1[r] > v) {
+                // 如果 nums1[right] 能胜过 v，那就自己上
+                res[i] = nums1[r];
+                r--;
+            } else {
+                // 否则用最小值混一下，养精蓄锐
+                res[i] = nums1[l];
+                l++;
+            }
+        }
+
+        return res;
+    }
+
+}
