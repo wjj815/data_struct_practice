@@ -89,4 +89,53 @@ public class Solution {
         return slow;
     }
 
+
+    /**
+     * 27. 移除元素
+     * 给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
+     *
+     * 不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。
+     *
+     * 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/remove-element
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param nums
+     * @param val
+     * @return
+     */
+    public int removeElement(int[] nums, int val) {
+        int slow = 0, fast = 0;
+
+        while(fast < nums.length) {
+
+            /**
+             * 注意这里和有序数组去重的解法有一个重要不同，我们这里是先给nums[slow]赋值然后再给slow++，
+             * 这样可以保证nums[0..slow-1]是不包含值为val的元素的，最后的结果数组长度就是slow
+             */
+            if(nums[slow] != val) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+            fast++;
+        }
+
+        return slow;
+    }
+
+    /**
+     * 283. 移动零
+     * 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+     *
+     * 请注意 ，必须在不复制数组的情况下原地对数组进行操作。
+     * @param nums
+     */
+    public void moveZeroes(int[] nums) {
+
+        int p = removeElement(nums, 0);
+        while(p < nums.length) {
+            nums[p] = 0;
+        }
+    }
 }
