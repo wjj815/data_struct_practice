@@ -8,7 +8,7 @@ import java.util.Map;
  * 实现方式： 哈希表+双向链表
  * reference : 剑指 Offer II 031. 最近最少使用缓存
  */
-public class LruCache {
+public class LRUCache {
 
     // 默认容量
     private final static Integer DEFAULT_CAPACITY = 3;
@@ -23,11 +23,11 @@ public class LruCache {
 
     private Node deletedNode;
 
-    public LruCache() {
+    public LRUCache() {
         this(DEFAULT_CAPACITY);
     }
 
-    public LruCache(int initCapacity) {
+    public LRUCache(int initCapacity) {
         if (initCapacity < DEFAULT_CAPACITY) {
             initCapacity = DEFAULT_CAPACITY;
         }
@@ -121,7 +121,7 @@ public class LruCache {
     }
 
     public static void main(String[] args) {
-        LruCache lruCache = new LruCache(3);
+        LRUCache lruCache = new LRUCache(3);
         lruCache.put(1, 2);
         lruCache.put(2, 3);
         lruCache.put(3, 4);
