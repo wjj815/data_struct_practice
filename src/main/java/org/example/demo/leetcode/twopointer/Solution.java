@@ -68,7 +68,22 @@ public class Solution {
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     *
+     */
+    public int removeDuplicates(int[] nums) {
+        int n = 0;
+        int slow = n, fast = n;
+
+        while(fast < nums.length) {
+            if(nums[slow - n] != nums[fast]) {
+                // 因为保留只出现一次的数，所以先递增后赋值
+                slow++;
+                nums[slow] = nums[fast];
+            }
+            fast++;
+        }
+        return slow + 1;
+    }
+    /**
      * 类似 80. 删除有序数组中的重复项 II （可秒杀）
      *
      * @param nums 数组
