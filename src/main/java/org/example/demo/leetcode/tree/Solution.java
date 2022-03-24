@@ -102,4 +102,71 @@ public class Solution {
         cur.right = right;
     }
 
+
+    /**
+     * 654. 最大二叉树
+     * 给定一个不重复的整数数组 nums 。 最大二叉树 可以用下面的算法从 nums 递归地构建:
+     *
+     * 创建一个根节点，其值为 nums 中的最大值。
+     * 递归地在最大值 左边 的 子数组前缀上 构建左子树。
+     * 递归地在最大值 右边 的 子数组后缀上 构建右子树。
+     * 返回 nums 构建的 最大二叉树 。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/maximum-binary-tree
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param nums
+     * @return
+     */
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return build(nums, 0, nums.length - 1);
+    }
+
+    /**
+     * 将 nums[l..h] 构造成符合条件的树， 返回根节点
+     * @param nums
+     * @param l
+     * @param r
+     * @return
+     */
+    public TreeNode build(int[] nums, int l, int r) {
+        // base case
+        if(l > r) {
+            return null;
+        }
+
+        // 找到数组中的最大值
+        int maxIndex = l;
+
+        for(int i = l; i <= r; i++) {
+            if(nums[i] > nums[maxIndex]) {
+                maxIndex = i;
+            }
+        }
+
+        TreeNode node = new TreeNode(nums[maxIndex]);
+        // 递归调用构建左右子树
+        node.left = build(nums, l, maxIndex - 1);
+        node.right = build(nums, maxIndex + 1, r);
+        return node;
+    }
+
+
+    /**
+     * 106. 从中序与后序遍历序列构造二叉树
+     * 给定两个整数数组 inorder 和 postorder ，其中 inorder 是二叉树的中序遍历， postorder 是同一棵树的后序遍历，请你构造并返回这颗 二叉树 。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param inorder
+     * @param postorder
+     * @return
+     */
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+
+    }
+
+
+
 }
