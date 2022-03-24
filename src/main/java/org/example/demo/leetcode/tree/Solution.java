@@ -102,5 +102,4 @@ public class Solution {
         cur.right = right;
     }
 
-    }
 }
