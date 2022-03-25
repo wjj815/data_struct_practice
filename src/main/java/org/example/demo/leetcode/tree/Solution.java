@@ -2,7 +2,9 @@ package org.example.demo.leetcode.tree;
 
 import org.example.demo.tree.TreeNode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -197,6 +199,51 @@ public class Solution {
         node.right = buildNode(inorder, postorder, inIndex + 1, inR, postL + leftSize, postR - 1, map);
         return node;
     }
+
+
+    /**
+     * 652. 寻找重复的子树
+     * 给定一棵二叉树 root，返回所有重复的子树。
+     *
+     * 对于同一类的重复子树，你只需要返回其中任意一棵的根结点即可。
+     *
+     * 如果两棵树具有相同的结构和相同的结点值，则它们是重复的。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/find-duplicate-subtrees
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param root
+     * @return
+     */
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        List<TreeNode> res = new ArrayList<>();
+        HashMap<String, Integer> memo = new HashMap<>();
+        getStringByTraverse(root, memo, res);
+        return res;
+    }
+
+    public String getStringByTraverse(TreeNode root, HashMap<String, Integer> memo, List<TreeNode> res) {
+        if(root == null) {
+            return "#";
+
+        }
+
+        String left = getStringByTraverse(root.left, memo, res);
+        String right = getStringByTraverse(root.right, memo, res);
+        String subTree = String.format("%s,%s,%s", left, right, root.val);
+
+        int freq = memo.getOrDefault(subTree, 0);
+        // 多次重复也只会被加入结果集一次
+        if(freq == 1) {
+            res.add(root);
+        }
+        // 给子树对应的出现次数加一
+        memo.put(subTree, freq + 1);
+        return subTree;
+
+    }
+
+
 
 
 }
