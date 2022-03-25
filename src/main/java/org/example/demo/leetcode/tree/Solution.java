@@ -178,14 +178,14 @@ public class Solution {
      * @return
      */
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        Map<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> inMap = new HashMap<>();
         for (int i = 0; i < inorder.length; i++) {
-            map.put(inorder[i], i);
+            inMap.put(inorder[i], i);
         }
-        return buildNode(inorder, postorder, 0, inorder.length - 1, 0, postorder.length - 1, map);
+        return buildNode(postorder, 0, inorder.length - 1, 0, postorder.length - 1, inMap);
     }
 
-    public TreeNode buildNode(int[] inorder, int[] postorder, int inL, int inR, int postL, int postR, Map<Integer, Integer> map) {
+    public TreeNode buildNode(int[] postorder, int inL, int inR, int postL, int postR, Map<Integer, Integer> map) {
         // base case
         if (inL > inR) {
             return null;
@@ -195,8 +195,8 @@ public class Solution {
         int inIndex = map.get(postorder[postR]);
         int leftSize = inIndex - inL;
 
-        node.left = buildNode(inorder, postorder, inL, inIndex - 1, postL, postL + leftSize - 1, map);
-        node.right = buildNode(inorder, postorder, inIndex + 1, inR, postL + leftSize, postR - 1, map);
+        node.left = buildNode(postorder, inL, inIndex - 1, postL, postL + leftSize - 1, map);
+        node.right = buildNode(postorder, inIndex + 1, inR, postL + leftSize, postR - 1, map);
         return node;
     }
 
