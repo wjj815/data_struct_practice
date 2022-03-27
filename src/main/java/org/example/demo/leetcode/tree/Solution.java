@@ -243,7 +243,33 @@ public class Solution {
 
     }
 
+    // 记录最大直径的长度
+    int maxDiameter = 0;
 
+    /**
+     * 543. 二叉树的直径
+     * 难度
+     * 简单
+     * 给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。
+     * @param root
+     * @return
+     */
+    public int diameterOfBinaryTree(TreeNode root) {
+        maxDepthForMaxDiameter(root);
+        return maxDiameter;
+    }
+
+    int maxDepthForMaxDiameter(TreeNode root) {
+        if(root == null) {
+            return 0;
+        }
+        int leftMax = maxDepthForMaxDiameter(root.left);
+        int rightMax = maxDepthForMaxDiameter(root.right);
+        // 后序位置顺便计算最大直径
+        int myDiameter = leftMax + rightMax;
+        maxDiameter = Math.max(maxDiameter, myDiameter);
+        return 1 + Math.max(leftMax, rightMax);
+    }
 
 
 }
