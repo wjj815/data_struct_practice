@@ -2,6 +2,7 @@ package org.example.demo.graph;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class CourseTableSolution {
 
@@ -38,44 +39,43 @@ public class CourseTableSolution {
         onPath = new boolean[numCourses];
         for (int i = 0; i < numCourses; i++) {
             // 遍历图中的所有节点
-            traverse(graph, i);
+            dfs(graph, i);
         }
 
         // 只有没有循环依赖可以完成所有课程
         return !hasCycle;
     }
 
-
     /**
-     * 课程表 2
-     * 现在你总共有 numCourses 门课需要选，记为 0 到 numCourses - 1。给你一个数组 prerequisites ，其中 prerequisites[i] = [ai, bi] ，表示在选修课程 ai 前 必须 先选修 bi 。
-     *
-     * 例如，想要学习课程 0 ，你需要先完成课程 1 ，我们用一个匹配来表示：[0,1] 。
-     * 返回你为了学完所有课程所安排的学习顺序。可能会有多个正确的顺序，你只要返回 任意一种 就可以了。如果不可能完成所有课程，返回 一个空数组 。
-     *
-     * 来源：力扣（LeetCode）
-     * 链接：https://leetcode-cn.com/problems/course-schedule-ii
-     * @param numCourses
-     * @param prerequisites
-     * @return
+     * 图的遍历
+     * @param graph 图
+     * @param s 开始顶点
+
      */
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        // 保证图中无环
-        if(!canFinish(numCourses, prerequisites)) {
-            return new int[0];
-        }
-        List<Integer> order = new LinkedList<>();
+    public void dfs(List<Integer>[] graph, int s) {
 
-        // 建图
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-        // 进行 DFS 遍历
-        visited = new boolean[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            traverse(graph, i, order);
+        if(onPath[s]) {
+            // 发现环
+            hasCycle = true;
+            // 如果已经找到了环，也不用再遍历了
+            return;
         }
 
-        return order.stream().mapToInt(Integer::intValue).toArray();
+        if(visited[s]) {
+            return;
+        }
+
+        /* 前序遍历代码位置*/
+        // 将当前节点标记为已遍历
+        visited[s] = true;
+        onPath[s] = true;
+        for (Integer neighbor : graph[s]) {
+            dfs(graph, neighbor);
+        }
+        /* 后序遍历代码位置 */
+        onPath[s] = false;
     }
+
 
     public List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
         // 图中 共有 numCourses 个节点
@@ -94,35 +94,124 @@ public class CourseTableSolution {
         return graph;
     }
 
+    /**
+     * bfs 版本
+     * @param numCourses
+     * @param prerequisites
+     * @return
+     */
+    public boolean canFinishByBFS(int numCourses, int[][] prerequisites) {
+        // 建图，有向边代表[被依赖]关系
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+        // 构建入度数组
+        int[] inDegree = new int[numCourses];
+        for (int[] prerequisite : prerequisites) {
+            int to = prerequisite[0];
+            // 节点 to 的入度加 1
+            inDegree[to] ++;
+        }
+
+        // 根据入度初始化队列中的节点
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < numCourses; i++) {
+            if(inDegree[i] == 0) {
+                // 节点 i 没有入度， 即没有依赖的节点
+                // 可以作为拓扑排序的起点，加入队列
+                q.offer(i);
+            }
+        }
+
+        // 记录遍历的节点数
+        int count = 0;
+        while(!q.isEmpty()) {
+            // 弹出节点 cur, 并将它指向的节点的入度坚毅
+            int cur = q.poll();
+            count++;
+            for(int next : graph[cur]) {
+                inDegree[next]--;
+                if(inDegree[next] == 0) {
+                    // 如果入度变为 0, 说明 next 依赖的节点都已被遍历
+                    q.offer(next);
+                }
+            }
+        }
+        // 如果所有节点都被遍历过， 说明不成环
+        return count == numCourses;
+    }
+
 
     /**
-     * 图的遍历
-     * @param graph 图
-     * @param s 开始顶点
-
+     * 课程表 2
+     * 现在你总共有 numCourses 门课需要选，记为 0 到 numCourses - 1。给你一个数组 prerequisites ，其中 prerequisites[i] = [ai, bi] ，表示在选修课程 ai 前 必须 先选修 bi 。
+     *
+     * 例如，想要学习课程 0 ，你需要先完成课程 1 ，我们用一个匹配来表示：[0,1] 。
+     * 返回你为了学完所有课程所安排的学习顺序。可能会有多个正确的顺序，你只要返回 任意一种 就可以了。如果不可能完成所有课程，返回 一个空数组 。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/course-schedule-ii
+     * @param numCourses
+     * @param prerequisites
+     * @return
      */
-    public void traverse(List<Integer>[] graph, int s) {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
 
-        if(onPath[s]) {
-            // 发现环
-            hasCycle = true;
-            // 如果已经找到了环，也不用再遍历了
-            return;
+        List<Integer> order = new LinkedList<>();
+        // 建图
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+        visited = new boolean[numCourses];
+        // 遍历图
+        for(int i = 0; i < numCourses; i++) {
+            dfs(graph, i, order);
         }
 
-        if(visited[s]) {
-            return;
+        return order.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public int[] findOrderByBFS(int numCourses, int[][] prerequisites) {
+
+        // 建图，有向边代表[被依赖]关系
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+        // 构建入度数组
+        int[] inDegree = new int[numCourses];
+        for (int[] prerequisite : prerequisites) {
+            int to = prerequisite[0];
+            // 节点 to 的入度加 1
+            inDegree[to] ++;
         }
 
-        /* 前序遍历代码位置*/
-        // 将当前节点标记为已遍历
-        visited[s] = true;
-        onPath[s] = true;
-        for (Integer neighbor : graph[s]) {
-            traverse(graph, neighbor);
+        // 根据入度初始化队列中的节点
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < numCourses; i++) {
+            if(inDegree[i] == 0) {
+                // 节点 i 没有入度， 即没有依赖的节点
+                // 可以作为拓扑排序的起点，加入队列
+                q.offer(i);
+            }
         }
-        /* 后序遍历代码位置 */
-        onPath[s] = false;
+        // 记录拓扑排序结果
+        int[] res = new int[numCourses];
+
+        // 记录遍历的节点数
+        int count = 0;
+        while(!q.isEmpty()) {
+            // 弹出节点 cur, 并将它指向的节点的入度坚毅
+            int cur = q.poll();
+            res[count] = cur;
+            count++;
+            for(int next : graph[cur]) {
+                inDegree[next]--;
+                if(inDegree[next] == 0) {
+                    // 如果入度变为 0, 说明 next 依赖的节点都已被遍历
+                    q.offer(next);
+                }
+            }
+        }
+
+        if(count != numCourses) {
+            return new int[]{};
+        }
+        // 如果所有节点都被遍历过， 说明不成环
+        return res;
     }
 
 
@@ -132,7 +221,12 @@ public class CourseTableSolution {
      * @param s
      * @param order
      */
-    public void traverse(List<Integer>[] graph, int s, List<Integer> order) {
+    public void dfs(List<Integer>[] graph, int s, List<Integer> order) {
+
+        if(onPath[s]) {
+            hasCycle = true;
+            return;
+        }
 
         if(visited[s]) {
             return;
@@ -143,7 +237,7 @@ public class CourseTableSolution {
         visited[s] = true;
 
         for (Integer neighbor : graph[s]) {
-            traverse(graph, neighbor, order);
+            dfs(graph, neighbor, order);
         }
         /* 后序遍历代码位置 */
         order.add(0, s);
