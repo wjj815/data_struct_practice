@@ -10,7 +10,7 @@ public class UnionFindSet {
     // 节点 x 的节点是 parent[x], 存储若干颗树
     private final int[] parent;
     // 记录树的重量
-    private int[] size;
+    private final int[] size;
 
 
     /**
