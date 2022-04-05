@@ -6,9 +6,9 @@ package org.example.demo.leetcode.array;
 public class NumArray {
 
     // 使用数组存储线段树
-    private int[] segmentTree;
+    private final int[] segmentTree;
 
-    private int n;
+    private final int n;
 
     public NumArray(int[] nums) {
         n = nums.length;
