@@ -144,4 +144,72 @@ public class Solution {
         return false;
     }
 
+
+    /**
+     * 78. 子集
+     * 难度
+     * 中等
+     * 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+     *
+     * 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        LinkedList<Integer> track = new LinkedList<>();
+        backTrackForSubSets(nums, 0, track, res);
+        return res;
+    }
+
+    private void backTrackForSubSets(int[] nums, int start, LinkedList<Integer> track, List<List<Integer>> res) {
+        res.add(new ArrayList<>(track));
+
+        for(int i = start; i < nums.length; i++) {
+            track.addLast(nums[i]);
+            backTrackForSubSets(nums, i + 1, track, res);
+            track.pollLast();
+        }
+    }
+
+
+    /**
+     *
+     * 77. 组合
+     * 难度
+     * 中等
+     * 给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。
+     *
+     * 你可以按 任何顺序 返回答案。
+     * @param n
+     * @param k
+     * @return
+     */
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        LinkedList<Integer> track = new LinkedList<>();
+        backTrackForCombine(n, k, 1, track, res);
+        return res;
+    }
+
+    private void backTrackForCombine(int n, int k, int start, LinkedList<Integer> track, List<List<Integer>> res) {
+        // 优化
+        if(track.size() + (n - start + 1) < k) {
+            return;
+        }
+
+        if(k == track.size()) {
+            res.add(new ArrayList<>(track));
+            return;
+        }
+
+
+
+        for(int i = start; i <= n; i++) {
+            track.addLast(i);
+            backTrackForCombine(n, k, i + 1, track, res);
+            track.removeLast();
+        }
+    }
+
 }
