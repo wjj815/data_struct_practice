@@ -1,7 +1,6 @@
 package org.example.demo.leetcode.bfs;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Solution {
 
@@ -144,15 +143,16 @@ public class Solution {
      * 773. 滑动谜题
      * 难度
      * 困难
-     ** 在一个 2 x 3 的板上（board）有 5 块砖瓦，用数字 1~5 来表示, 以及一块空缺用 0 来表示。一次 移动 定义为选择 0 与一个相邻的数字（上下左右）进行交换.
-     *
+     * * 在一个 2 x 3 的板上（board）有 5 块砖瓦，用数字 1~5 来表示, 以及一块空缺用 0 来表示。一次 移动 定义为选择 0 与一个相邻的数字（上下左右）进行交换.
+     * <p>
      * 最终当板 board 的结果是 [[1,2,3],[4,5,0]] 谜板被解开。
-     *
+     * <p>
      * 给出一个谜板的初始状态 board ，返回最少可以通过多少次移动解开谜板，如果不能解开谜板，则返回 -1
-     *
+     * <p>
      * 来源：力扣（LeetCode）
      * 链接：https://leetcode-cn.com/problems/sliding-puzzle
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
      * @param board
      * @return
      */
@@ -169,8 +169,8 @@ public class Solution {
         String target = "123450";
 
         StringBuilder start = new StringBuilder();
-        for(int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board[0].length; j++) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
                 start.append(board[i][j]);
             }
         }
@@ -182,18 +182,18 @@ public class Solution {
         queue.offer(init);
         visited.add(init);
         int step = 0;
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             int size = queue.size();
 
             for (int i = 0; i < size; i++) {
                 String cur = queue.poll();
 
-                if(target.equals(cur)) {
+                if (target.equals(cur)) {
                     return step;
                 }
 
                 int x = 0;
-                for(; cur.charAt(x) != '0'; x++);
+                for (; cur.charAt(x) != '0'; x++) ;
                 for (int neighbor : neighbors[x]) {
 
                     char[] chars = cur.toCharArray();
@@ -201,7 +201,7 @@ public class Solution {
                     chars[x] = chars[neighbor];
                     chars[neighbor] = temp;
                     String next = new String(chars);
-                    if(!visited.contains(next)) {
+                    if (!visited.contains(next)) {
                         queue.offer(next);
                         visited.add(next);
                     }
