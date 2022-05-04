@@ -170,29 +170,30 @@ public class DPSolution {
 
         class DP {
             // 字符 -> 索引列表
-            
+
             // 备忘录
             final int[][] memo;
+
             public DP(int[][] memo) {
                 this.memo = memo;
             }
 
             // 计算圆盘指针在 ring[i],输入 key[j...] 的最少操作数
             public int dp(String ring, int i, String key, int j) {
-                // base case 
-                if(j == key.length()) {
+                // base case
+                if (j == key.length()) {
                     return 0;
                 }
                 // 查找备忘录，避免重叠子问题
-                if(memo[i][j] != 0) {
+                if (memo[i][j] != 0) {
                     return memo[i][j];
                 }
 
-                int n =  ring.length();
+                int n = ring.length();
                 // 做选择
                 int res = Integer.MAX_VALUE;
                 // ring 上可能有多个字符 key[j]
-                for(int k : map.get(key.charAt(j))) {
+                for (int k : map.get(key.charAt(j))) {
                     // 拨动指针的次数
                     int delta = Math.abs(k - i);
                     // 选择顺时针还是逆时针
@@ -203,13 +204,13 @@ public class DPSolution {
                     res = Math.min(res, 1 + delta + subProblem);
                     // PS: 加一是因为拨动按钮也是一次操作
                 }
-                // 将结果存入备忘录           
-                return memo[i][j] = res;        
+                // 将结果存入备忘录
+                return memo[i][j] = res;
             }
         }
 
         int[][] memo = new int[ring.length()][key.length()];
-    
+
         DP dp = new DP(memo);
         for (int i = 0; i < ring.length(); i++) {
             map.putIfAbsent(ring.charAt(i), new ArrayList<>());
@@ -226,29 +227,30 @@ public class DPSolution {
 
         class DP {
             // 字符 -> 索引列表
-            
+
             // 备忘录
             final int[][] memo;
+
             public DP(int[][] memo) {
                 this.memo = memo;
             }
 
             // 计算圆盘指针在 ring[i],输入 key[j...] 的最少操作数
             public int dp(String ring, int i, String key, int j) {
-                // base case 
-                if(j == key.length()) {
+                // base case
+                if (j == key.length()) {
                     return 0;
                 }
                 // 查找备忘录，避免重叠子问题
-                if(memo[i][j] != 0) {
+                if (memo[i][j] != 0) {
                     return memo[i][j];
                 }
 
-                int n =  ring.length();
+                int n = ring.length();
                 // 做选择
                 int res = Integer.MAX_VALUE;
                 // ring 上可能有多个字符 key[j]
-                for(int k : map.get(key.charAt(j))) {
+                for (int k : map.get(key.charAt(j))) {
                     // 拨动指针的次数
                     int delta = Math.abs(k - i);
                     // 选择顺时针还是逆时针
@@ -259,13 +261,13 @@ public class DPSolution {
                     res = Math.min(res, 1 + delta + subProblem);
                     // PS: 加一是因为拨动按钮也是一次操作
                 }
-                // 将结果存入备忘录           
-                return memo[i][j] = res;        
+                // 将结果存入备忘录
+                return memo[i][j] = res;
             }
         }
 
         int[][] memo = new int[ring.length()][key.length()];
-    
+
         DP dp = new DP(memo);
         for (int i = 0; i < ring.length(); i++) {
             map.putIfAbsent(ring.charAt(i), new ArrayList<>());
@@ -274,6 +276,98 @@ public class DPSolution {
         // 圆盘指针最初指向 12 点钟方向
         // 从第一个字符开始输入 key
         return dp.dp(ring, 0, key, 0);
+    }
+
+    /**
+     * 300. 最长递增子序列
+     * 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+     * 
+     * 子序列 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7]
+     * 的子序列。
+     * 
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/longest-increasing-subsequence
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * 
+     * 输入：nums = [10,9,2,5,3,7,101,18]
+     * 输出：4
+     * 解释：最长递增子序列是 [2,3,7,101]，因此长度为 4 。
+     * 
+     * 
+     * 
+     * @param nums
+     * @return
+     */
+    public int lengthOfLIS(int[] nums) {
+        int[] top = new int[nums.length];
+        // 牌堆数初始化为 0
+        int piles = 0;
+        for (int i = 0; i < nums.length; i++) {
+            // 要处理的扑克牌
+            int poker = nums[i];
+            // 搜索左侧边界的二分查找
+            int left = 0, right = piles - 1;
+            while (left <= right) {
+                int mid = (left + right) / 2;
+                if (top[mid] > poker) {
+                    right = mid - 1;
+                } else if (top[mid] < poker) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+            // 没有找到合适的牌堆，新建一堆
+            if (left >= piles) {
+                piles++;
+            }
+            // 吧这张牌放在牌堆顶
+            top[left] = poker;
+            /**
+             * 放牌堆的过程
+             * [10, 0, 0, 0, 0, 0, 0, 0]
+             * [9, 0, 0, 0, 0, 0, 0, 0]
+             * [2, 0, 0, 0, 0, 0, 0, 0]
+             * [2, 5, 0, 0, 0, 0, 0, 0]
+             * [2, 3, 0, 0, 0, 0, 0, 0]
+             * [2, 3, 7, 0, 0, 0, 0, 0]
+             * [2, 3, 7, 101, 0, 0, 0, 0]
+             * [2, 3, 7, 18, 0, 0, 0, 0]
+             * 
+             */
+            // System.out.println(Arrays.toString(top));
+        }
+
+        return piles;
+    }
+
+    /**
+     * dp 版
+     * 
+     * @param nums
+     * @return
+     */
+    public int lengthOfLISByDP(int[] nums) {
+
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        // dp[i]表示以 i 下标结束的LIS
+        int[] dp = new int[nums.length];
+        // base case
+        Arrays.fill(dp, 1);
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+
+            res = Math.max(res, dp[i]);
+        }
+
+        return res;
     }
 
 }
