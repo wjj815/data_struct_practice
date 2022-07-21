@@ -370,4 +370,31 @@ public class DPSolution {
         return res;
     }
 
+    /**
+     * 53. 最大子数组和
+     * 难度
+     * 简单
+     * 
+     * 4849
+     * 
+     * 给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+     * 
+     * 子数组 是数组中的一个连续部分。
+     * 
+     * @param nums
+     * @return
+     */
+    public int maxSubArray(int[] nums) {
+        // base case
+        int dp_0 = nums[0];
+        int res = dp_0;
+        for (int i = 1; i < nums.length; i++) {
+            int dp_1 = Math.max(nums[i], nums[i] + dp_0);
+            dp_0 = dp_1;
+            // 顺便计算最大的结果
+            res = Math.max(res, dp_1);
+        }
+        return res;
+    }
+
 }
